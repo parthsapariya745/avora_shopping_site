@@ -21,19 +21,30 @@ if ($isLocalXampp) {
     $envPath = dirname(__DIR__) . "/.env";
     $env = file_exists($envPath) ? (@parse_ini_file($envPath) ?: []) : [];
     
-    $host = getenv("DB_HOST") ?: ($env["DB_HOST"] ?? "127.0.0.1");
-    $user = getenv("DB_USER") ?: ($env["DB_USER"] ?? "root");
-    $pass = getenv("DB_PASS") ?: ($env["DB_PASS"] ?? "");
-    $name = getenv("DB_NAME") ?: ($env["DB_NAME"] ?? "ecommerce__website");
-    $port = (int)(getenv("DB_PORT") ?: ($env["DB_PORT"] ?? 3306));
+    $host = $env["DB_HOST"] ?? "127.0.0.1";
+    $user = $env["DB_USER"] ?? "root";
+    $pass = $env["DB_PASS"] ?? "";
+    $name = $env["DB_NAME"] ?? "ecommerce__website";
+    $port = (int)($env["DB_PORT"] ?? 3306);
 } else {
     // Vercel Production Serverless Linux environment -> TiDB Cloud
-    $host = getenv("DB_HOST") ?: ($_ENV["DB_HOST"] ?? ($_SERVER["DB_HOST"] ?? "gateway01.ap-southeast-1.prod.aws.tidbcloud.com"));
-    $user = getenv("DB_USER") ?: ($_ENV["DB_USER"] ?? ($_SERVER["DB_USER"] ?? "3ZHmKaANm6brJym.root"));
-    $pass = getenv("DB_PASS") ?: ($_ENV["DB_PASS"] ?? ($_SERVER["DB_PASS"] ?? "IcJIp8pu8BZvNCPv"));
-    $name = getenv("DB_NAME") ?: ($_ENV["DB_NAME"] ?? ($_SERVER["DB_NAME"] ?? "test"));
-    $port = (int)(getenv("DB_PORT") ?: ($_ENV["DB_PORT"] ?? ($_SERVER["DB_PORT"] ?? 4000)));
+    $envHost = getenv("DB_HOST") ?: ($_ENV["DB_HOST"] ?? ($_SERVER["DB_HOST"] ?? ""));
+    
+    if (empty($envHost) || $envHost === "127.0.0.1" || $envHost === "localhost") {
+        $host = "gateway01.ap-southeast-1.prod.aws.tidbcloud.com";
+        $user = "3ZHmKaANm6brJym.root";
+        $pass = "IcJIp8pu8BZvNCPv";
+        $name = "test";
+        $port = 4000;
+    } else {
+        $host = $envHost;
+        $user = getenv("DB_USER") ?: ($_ENV["DB_USER"] ?? ($_SERVER["DB_USER"] ?? "3ZHmKaANm6brJym.root"));
+        $pass = getenv("DB_PASS") ?: ($_ENV["DB_PASS"] ?? ($_SERVER["DB_PASS"] ?? "IcJIp8pu8BZvNCPv"));
+        $name = getenv("DB_NAME") ?: ($_ENV["DB_NAME"] ?? ($_SERVER["DB_NAME"] ?? "test"));
+        $port = (int)(getenv("DB_PORT") ?: ($_ENV["DB_PORT"] ?? ($_SERVER["DB_PORT"] ?? 4000)));
+    }
 }
+
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
