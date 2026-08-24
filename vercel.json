@@ -1,15 +1,14 @@
 {
   "version": 2,
   "functions": {
-    "api/**/*.php": { "runtime": "vercel-php@0.7.0" },
-    "user/**/*.php": { "runtime": "vercel-php@0.7.0" },
-    "admin/**/*.php": { "runtime": "vercel-php@0.7.0" },
-    "*.php": { "runtime": "vercel-php@0.7.0" }
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.0"
+    }
   },
   "routes": [
-    { "src": "/", "dest": "/user/index.php" },
-    { "src": "/user", "dest": "/user/index.php" },
-    { "src": "/admin", "dest": "/admin/index.php" },
-    { "src": "/(.*)", "dest": "/$1" }
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
   ]
 }
