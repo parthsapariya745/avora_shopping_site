@@ -45,9 +45,9 @@ if (!isset($conn) || !($conn instanceof mysqli) || @$conn->ping() === false) {
         }
 
         if ($conn->connect_error) {
-            die("<div style='padding:2rem; font-family:sans-serif; color:#dc2626;'>Unable to connect to database. Please check your database service.</div>");
+            die("<div style='padding:2rem; font-family:sans-serif; color:#dc2626;'>Unable to connect to database: " . htmlspecialchars($conn->connect_error) . " (Host: " . htmlspecialchars($host) . ", User: " . htmlspecialchars($user) . ", DB: " . htmlspecialchars($name) . ", Port: " . $port . ")</div>");
         }
     } catch (\Throwable $e) {
-        die("<div style='padding:2rem; font-family:sans-serif; color:#dc2626;'>Unable to connect to database. Please check your database service.</div>");
+        die("<div style='padding:2rem; font-family:sans-serif; color:#dc2626;'>Unable to connect to database: " . htmlspecialchars($e->getMessage()) . "</div>");
     }
 }
