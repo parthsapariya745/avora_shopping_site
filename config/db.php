@@ -13,42 +13,27 @@ if (!headers_sent()) {
 
 global $conn;
 
-// 1. Read environment variables from Vercel / Server
-$host = getenv("DB_HOST") ?: ($_ENV["DB_HOST"] ?? ($_SERVER["DB_HOST"] ?? null));
-$user = getenv("DB_USER") ?: ($_ENV["DB_USER"] ?? ($_SERVER["DB_USER"] ?? null));
-$pass = getenv("DB_PASS") ?: ($_ENV["DB_PASS"] ?? ($_SERVER["DB_PASS"] ?? null));
-$name = getenv("DB_NAME") ?: ($_ENV["DB_NAME"] ?? ($_SERVER["DB_NAME"] ?? null));
-$port = getenv("DB_PORT") ?: ($_ENV["DB_PORT"] ?? ($_SERVER["DB_PORT"] ?? null));
+// Detect environment based on OS (Windows = Local XAMPP, Linux = Vercel Cloud)
+$isLocalXampp = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 
-// 2. Detect if running online on Vercel vs Local XAMPP
-$serverHost = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? '');
-$isOnline = ($serverHost !== '' && !str_contains($serverHost, 'localhost') && !str_contains($serverHost, '127.0.0.1'));
-
-if ($isOnline && !$host) {
-    // Automatic TiDB Cloud Fallback for Vercel Online Environment
-    $host = "gateway01.ap-southeast-1.prod.aws.tidbcloud.com";
-    $user = "3ZHmKaANm6brJym.root";
-    $pass = "IcJIp8pu8BZvNCPv";
-    $name = "test";
-    $port = 4000;
-} elseif (!$isOnline) {
-    // Local XAMPP Fallback
+if ($isLocalXampp) {
+    // Local Windows XAMPP environment
     $envPath = dirname(__DIR__) . "/.env";
-    if (file_exists($envPath)) {
-        $env = @parse_ini_file($envPath) ?: [];
-        $host = $host ?: ($env["DB_HOST"] ?? "127.0.0.1");
-        $user = $user ?: ($env["DB_USER"] ?? "root");
-        $pass = $pass !== null ? $pass : ($env["DB_PASS"] ?? "");
-        $name = $name ?: ($env["DB_NAME"] ?? "ecommerce__website");
-        $port = $port ?: ($env["DB_PORT"] ?? 3306);
-    }
+    $env = file_exists($envPath) ? (@parse_ini_file($envPath) ?: []) : [];
+    
+    $host = getenv("DB_HOST") ?: ($env["DB_HOST"] ?? "127.0.0.1");
+    $user = getenv("DB_USER") ?: ($env["DB_USER"] ?? "root");
+    $pass = getenv("DB_PASS") ?: ($env["DB_PASS"] ?? "");
+    $name = getenv("DB_NAME") ?: ($env["DB_NAME"] ?? "ecommerce__website");
+    $port = (int)(getenv("DB_PORT") ?: ($env["DB_PORT"] ?? 3306));
+} else {
+    // Vercel Production Serverless Linux environment -> TiDB Cloud
+    $host = getenv("DB_HOST") ?: ($_ENV["DB_HOST"] ?? ($_SERVER["DB_HOST"] ?? "gateway01.ap-southeast-1.prod.aws.tidbcloud.com"));
+    $user = getenv("DB_USER") ?: ($_ENV["DB_USER"] ?? ($_SERVER["DB_USER"] ?? "3ZHmKaANm6brJym.root"));
+    $pass = getenv("DB_PASS") ?: ($_ENV["DB_PASS"] ?? ($_SERVER["DB_PASS"] ?? "IcJIp8pu8BZvNCPv"));
+    $name = getenv("DB_NAME") ?: ($_ENV["DB_NAME"] ?? ($_SERVER["DB_NAME"] ?? "test"));
+    $port = (int)(getenv("DB_PORT") ?: ($_ENV["DB_PORT"] ?? ($_SERVER["DB_PORT"] ?? 4000)));
 }
-
-$host = $host ?: "localhost";
-$user = $user ?: "root";
-$pass = $pass !== null ? $pass : "";
-$name = $name ?: "test";
-$port = (int)($port ?: 3306);
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
