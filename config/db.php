@@ -13,18 +13,26 @@ if (!headers_sent()) {
 
 global $conn;
 
-$envPath = dirname(__DIR__) . "/.env";
-$env = [];
-if (file_exists($envPath)) {
-    $env = @parse_ini_file($envPath) ?: [];
+$host = getenv("DB_HOST") ?: ($_ENV["DB_HOST"] ?? ($_SERVER["DB_HOST"] ?? null));
+$user = getenv("DB_USER") ?: ($_ENV["DB_USER"] ?? ($_SERVER["DB_USER"] ?? null));
+$pass = getenv("DB_PASS") ?: ($_ENV["DB_PASS"] ?? ($_SERVER["DB_PASS"] ?? null));
+$name = getenv("DB_NAME") ?: ($_ENV["DB_NAME"] ?? ($_SERVER["DB_NAME"] ?? null));
+$port = getenv("DB_PORT") ?: ($_ENV["DB_PORT"] ?? ($_SERVER["DB_PORT"] ?? null));
+
+if (!$host && file_exists(dirname(__DIR__) . "/.env")) {
+    $env = @parse_ini_file(dirname(__DIR__) . "/.env") ?: [];
+    $host = $env["DB_HOST"] ?? null;
+    $user = $env["DB_USER"] ?? null;
+    $pass = $env["DB_PASS"] ?? null;
+    $name = $env["DB_NAME"] ?? null;
+    $port = $env["DB_PORT"] ?? null;
 }
 
-$host = getenv("DB_HOST") ?: ($_ENV["DB_HOST"] ?? ($_SERVER["DB_HOST"] ?? ($env["DB_HOST"] ?? "localhost")));
-$user = getenv("DB_USER") ?: ($_ENV["DB_USER"] ?? ($_SERVER["DB_USER"] ?? ($env["DB_USER"] ?? "root")));
-$pass = getenv("DB_PASS") ?: ($_ENV["DB_PASS"] ?? ($_SERVER["DB_PASS"] ?? ($env["DB_PASS"] ?? "")));
-$name = getenv("DB_NAME") ?: ($_ENV["DB_NAME"] ?? ($_SERVER["DB_NAME"] ?? ($env["DB_NAME"] ?? "")));
-$port = getenv("DB_PORT") ?: ($_ENV["DB_PORT"] ?? ($_SERVER["DB_PORT"] ?? ($env["DB_PORT"] ?? 3306)));
-$port = (int)$port;
+$host = $host ?: "localhost";
+$user = $user ?: "root";
+$pass = $pass !== null ? $pass : "";
+$name = $name ?: "";
+$port = (int)($port ?: 3306);
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
@@ -45,7 +53,16 @@ if (!isset($conn) || !($conn instanceof mysqli) || @$conn->ping() === false) {
         }
 
         if ($conn->connect_error) {
-            die("<div style='padding:2rem; font-family:sans-serif; color:#dc2626;'>Unable to connect to database: " . htmlspecialchars($conn->connect_error) . " (Host: " . htmlspecialchars($host) . ", User: " . htmlspecialchars($user) . ", DB: " . htmlspecialchars($name) . ", Port: " . $port . ")</div>");
+            die("<div style='padding:2rem; font-family:sans-serif; color:#dc2626; background:#fee2e2; border-radius:8px; margin:2rem;'>
+                <h2>⚠️ Database Connection Error</h2>
+                <p><strong>Reason:</strong> " . htmlspecialchars($conn->connect_error) . "</p>
+                <p><strong>Attempted Host:</strong> " . htmlspecialchars($host) . "</p>
+                <p><strong>Attempted User:</strong> " . htmlspecialchars($user) . "</p>
+                <p><strong>Attempted DB:</strong> " . htmlspecialchars($name) . "</p>
+                <p><strong>Attempted Port:</strong> " . $port . "</p>
+                <hr style='border:0; border-top:1px solid #fca5a5; margin:1rem 0;' />
+                <p><em>Note: If Host is 127.0.0.1, Vercel Environment Variables (DB_HOST, DB_USER, etc.) have not been added or saved in Vercel Dashboard yet.</em></p>
+            </div>");
         }
     } catch (\Throwable $e) {
         die("<div style='padding:2rem; font-family:sans-serif; color:#dc2626;'>Unable to connect to database: " . htmlspecialchars($e->getMessage()) . "</div>");
