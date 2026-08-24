@@ -12,6 +12,17 @@ if (empty($path) || $path === '/') {
 $rootDir = dirname(__DIR__);
 $targetFile = $rootDir . '/' . $path;
 
+// Fallback lookup for static assets (CSS, JS, Images, Fonts, Uploads)
+if (!file_exists($targetFile) && !is_dir($targetFile)) {
+    if (file_exists($rootDir . '/user/' . $path)) {
+        $targetFile = $rootDir . '/user/' . $path;
+    } elseif (file_exists($rootDir . '/public/' . $path)) {
+        $targetFile = $rootDir . '/public/' . $path;
+    } elseif (file_exists($rootDir . '/admin/' . $path)) {
+        $targetFile = $rootDir . '/admin/' . $path;
+    }
+}
+
 if (is_dir($targetFile)) {
     $targetFile = rtrim($targetFile, '/') . '/index.php';
 }
@@ -49,6 +60,7 @@ if (file_exists($targetFile) && !is_dir($targetFile)) {
         header("Content-Type: " . (mime_content_type($targetFile) ?: 'application/octet-stream'));
     }
     
+    header("Cache-Control: public, max-age=31536000, immutable");
     readfile($targetFile);
     exit;
 }
