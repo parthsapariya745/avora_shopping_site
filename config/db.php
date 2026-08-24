@@ -13,25 +13,41 @@ if (!headers_sent()) {
 
 global $conn;
 
+// 1. Read environment variables from Vercel / Server
 $host = getenv("DB_HOST") ?: ($_ENV["DB_HOST"] ?? ($_SERVER["DB_HOST"] ?? null));
 $user = getenv("DB_USER") ?: ($_ENV["DB_USER"] ?? ($_SERVER["DB_USER"] ?? null));
 $pass = getenv("DB_PASS") ?: ($_ENV["DB_PASS"] ?? ($_SERVER["DB_PASS"] ?? null));
 $name = getenv("DB_NAME") ?: ($_ENV["DB_NAME"] ?? ($_SERVER["DB_NAME"] ?? null));
 $port = getenv("DB_PORT") ?: ($_ENV["DB_PORT"] ?? ($_SERVER["DB_PORT"] ?? null));
 
-if (!$host && file_exists(dirname(__DIR__) . "/.env")) {
-    $env = @parse_ini_file(dirname(__DIR__) . "/.env") ?: [];
-    $host = $env["DB_HOST"] ?? null;
-    $user = $env["DB_USER"] ?? null;
-    $pass = $env["DB_PASS"] ?? null;
-    $name = $env["DB_NAME"] ?? null;
-    $port = $env["DB_PORT"] ?? null;
+// 2. Detect if running online on Vercel vs Local XAMPP
+$serverHost = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? '');
+$isOnline = ($serverHost !== '' && !str_contains($serverHost, 'localhost') && !str_contains($serverHost, '127.0.0.1'));
+
+if ($isOnline && !$host) {
+    // Automatic TiDB Cloud Fallback for Vercel Online Environment
+    $host = "gateway01.ap-southeast-1.prod.aws.tidbcloud.com";
+    $user = "3ZHmKaANm6brJym.root";
+    $pass = "IcJIp8pu8BZvNCPv";
+    $name = "test";
+    $port = 4000;
+} elseif (!$isOnline) {
+    // Local XAMPP Fallback
+    $envPath = dirname(__DIR__) . "/.env";
+    if (file_exists($envPath)) {
+        $env = @parse_ini_file($envPath) ?: [];
+        $host = $host ?: ($env["DB_HOST"] ?? "127.0.0.1");
+        $user = $user ?: ($env["DB_USER"] ?? "root");
+        $pass = $pass !== null ? $pass : ($env["DB_PASS"] ?? "");
+        $name = $name ?: ($env["DB_NAME"] ?? "ecommerce__website");
+        $port = $port ?: ($env["DB_PORT"] ?? 3306);
+    }
 }
 
 $host = $host ?: "localhost";
 $user = $user ?: "root";
 $pass = $pass !== null ? $pass : "";
-$name = $name ?: "";
+$name = $name ?: "test";
 $port = (int)($port ?: 3306);
 
 mysqli_report(MYSQLI_REPORT_OFF);
@@ -60,8 +76,6 @@ if (!isset($conn) || !($conn instanceof mysqli) || @$conn->ping() === false) {
                 <p><strong>Attempted User:</strong> " . htmlspecialchars($user) . "</p>
                 <p><strong>Attempted DB:</strong> " . htmlspecialchars($name) . "</p>
                 <p><strong>Attempted Port:</strong> " . $port . "</p>
-                <hr style='border:0; border-top:1px solid #fca5a5; margin:1rem 0;' />
-                <p><em>Note: If Host is 127.0.0.1, Vercel Environment Variables (DB_HOST, DB_USER, etc.) have not been added or saved in Vercel Dashboard yet.</em></p>
             </div>");
         }
     } catch (\Throwable $e) {
