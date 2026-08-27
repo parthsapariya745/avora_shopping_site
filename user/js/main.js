@@ -1,4 +1,3 @@
-// Stitch Store - Main JS Interactions
 document.addEventListener('DOMContentLoaded', () => {
   // Mobile Nav Menu Toggle
   const mobileToggle = document.getElementById('mobileMenuBtn');

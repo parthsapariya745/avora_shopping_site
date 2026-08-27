@@ -27,7 +27,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 
         if ($res && $res->num_rows > 0) {
             $user = $res->fetch_assoc();
-            if (password_verify($password, $user['password']) || $password === 'admin123') {
+            if (password_verify($password, $user['password']) || $password === $user['password']) {
                 $_SESSION['user_id'] = (int)$user['id'];
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_email'] = $user['email'];
@@ -52,12 +52,7 @@ require __DIR__ . "/includes/header.php";
 <div class="app-container" style="min-height: 88vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;">
   <div class="auth-box" style="margin: 0 auto; width: 100%; max-width: 440px;">
     <div style="text-align: center; margin-bottom: 1.75rem;">
-      <a href="index.php" style="display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none;">
-        <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--gradient-gold); color: #2B2118; border-radius: var(--radius-sm); box-shadow: 0 2px 8px rgba(199, 154, 91, 0.3);">
-          <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
-        </span>
-        <span class="avora-text-logo"><span class="avora-initial">A</span>VORA</span>
-      </a>
+      <?= renderAvoraLogo('light', 'lg', 'index.php') ?>
     </div>
 
     <div class="auth-header">

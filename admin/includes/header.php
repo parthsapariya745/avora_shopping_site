@@ -12,7 +12,8 @@ $adminInitials = strtoupper(substr($adminName, 0, 2));
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="<?= $base ?>../user/css/global.css">
   
   <?php if (!empty($pageCss)): ?>
     <link rel="stylesheet" href="<?= $base ?>css/<?= htmlspecialchars($pageCss) ?>">

@@ -159,7 +159,7 @@ require __DIR__ . "/includes/header.php";
             <input
               type="text"
               name="promo_code"
-              placeholder="Promo Code (STITCH15)"
+              placeholder="Promo Code (AVORA15)"
               value="<?= htmlspecialchars($promoCode) ?>"
               style="padding: 0.5rem 0.85rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.85rem; text-transform: uppercase;"
             />

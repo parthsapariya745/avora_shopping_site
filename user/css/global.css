@@ -467,3 +467,122 @@ img {
   color: var(--color-text-primary);
   font-weight: 600;
 }
+
+/* =========================================================
+   AVORA LUXURY BRAND LOGO SYSTEM (Light & Dark Themes)
+   ========================================================= */
+
+.avora-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none !important;
+  user-select: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  vertical-align: middle;
+}
+
+.avora-brand-logo:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Crest Monogram Shield Emblem */
+.avora-logo-crest {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #3D2314 0%, #1F110A 100%);
+  border: 2px solid #C79A5B;
+  box-shadow: 0 0 0 1px #3D2314, 0 4px 10px rgba(43, 27, 20, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  transform: rotate(45deg);
+  margin: 4px 6px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.avora-brand-logo:hover .avora-logo-crest {
+  border-color: #E6C280;
+  box-shadow: 0 0 14px rgba(199, 154, 91, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transform: rotate(45deg) scale(1.08);
+}
+
+.avora-crest-inner {
+  transform: rotate(-45deg);
+  font-family: 'Cinzel Decorative', 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FAD996 0%, #C79A5B 50%, #E6C280 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Typography Container */
+.avora-logo-typography {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.avora-title-main {
+  font-family: 'Cinzel Decorative', 'Cinzel', 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  color: #2B1B14; /* Deep rich dark brown for high visibility on light theme */
+  text-transform: uppercase;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+  transition: color 0.3s ease;
+}
+
+/* Variant for dark header/navbar/sidebar */
+.logo-variant-dark .avora-title-main,
+.navbar-wrapper .avora-title-main,
+.sidebar .avora-title-main,
+.email-header .avora-title-main {
+  color: #FAF6F0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Accent Initial 'A' */
+.avora-accent-letter {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  margin-right: 1px;
+}
+
+/* Stylish Sub-Tagline */
+.avora-tagline-sub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.38em;
+  color: #7A5334; /* Rich warm dark brown gold tint */
+  margin-top: 3px;
+  text-transform: uppercase;
+}
+
+.logo-variant-dark .avora-tagline-sub,
+.navbar-wrapper .avora-tagline-sub,
+.sidebar .avora-tagline-sub {
+  color: #C79A5B;
+}
+
+/* Sizes */
+.logo-size-sm .avora-logo-crest { width: 26px; height: 26px; border-radius: 6px; }
+.logo-size-sm .avora-crest-inner { font-size: 0.95rem; }
+.logo-size-sm .avora-title-main { font-size: 1.2rem; letter-spacing: 0.18em; }
+.logo-size-sm .avora-tagline-sub { font-size: 0.45rem; letter-spacing: 0.3em; }
+
+.logo-size-lg .avora-logo-crest { width: 48px; height: 48px; border-radius: 10px; }
+.logo-size-lg .avora-crest-inner { font-size: 1.75rem; }
+.logo-size-lg .avora-title-main { font-size: 2.1rem; letter-spacing: 0.25em; }
+.logo-size-lg .avora-tagline-sub { font-size: 0.65rem; letter-spacing: 0.45em; }
+

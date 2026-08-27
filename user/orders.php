@@ -118,7 +118,7 @@ require __DIR__ . "/includes/header.php";
             <div>
               <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">
-                  Order #STITCH-<?= $ord['id'] ?>
+                  Order #ORD-<?= $ord['id'] ?>
                 </h3>
                 <span class="badge <?= $badgeClass ?>"><?= strtoupper($status) ?></span>
               </div>

@@ -2,10 +2,27 @@
 $activeNav = 'contact';
 $pageTitle = 'Contact Us & FAQs - AVORA';
 require_once __DIR__ . "/includes/session.php";
+require_once __DIR__ . "/../config/mailer.php";
 
 $submitted = false;
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
-    setFlashMessage("Thank you for reaching out! Our team has received your message and will respond within 24 hours.", "success");
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $subject = trim($_POST['subject'] ?? '');
+    $message = trim($_POST['message'] ?? '');
+
+    if (empty($name) || empty($email) || empty($message)) {
+        setFlashMessage("Please fill in all required fields (Name, Email, and Message).", "error");
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        setFlashMessage("Please enter a valid email address.", "error");
+    } else {
+        $result = sendInquiryEmail($name, $email, $subject, $message);
+        if (!empty($result['smtp_sent'])) {
+            setFlashMessage("Thank you! Your inquiry has been sent directly to parthsapariyait7@gmail.com via SMTP.", "success");
+        } else {
+            setFlashMessage($result['message'] ?? "Thank you! Your message has been received.", "success");
+        }
+    }
     header("Location: contact.php");
     exit;
 }
@@ -92,9 +109,11 @@ require __DIR__ . "/includes/header.php";
             <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
           </div>
           <div>
-            <h4 style="font-weight: 700; font-size: 0.9rem;">Support Email</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;">support@stitchstore.com</p>
-            <p style="font-size: 0.75rem; color: var(--text-light);">24-hour response time</p>
+            <h4 style="font-weight: 700; font-size: 0.9rem;">Direct Inquiry Email</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem; word-break: break-all;"><strong>parthsapariyait7@gmail.com</strong></p>
+            <p style="font-size: 0.75rem; color: #16a34a; font-weight: 600; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem;">
+              <span style="display:inline-block; width:6px; height:6px; background:#16a34a; border-radius:50%;"></span> Direct SMTP Forwarding Active
+            </p>
           </div>
         </div>
       </div>

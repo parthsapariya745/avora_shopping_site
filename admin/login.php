@@ -51,17 +51,18 @@ if (($_SERVER["REQUEST_METHOD"] ?? '') === "POST") {
   <title>Admin Login - AVORA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../user/css/global.css">
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 
+<?php require_once __DIR__ . '/../user/includes/logo.php'; ?>
 <div class="login-wrapper">
   <div class="login-card">
-    <div class="brand-section">
-      <div class="brand-badge">AV</div>
-      <h1 class="brand-title">AVORA</h1>
-      <p class="brand-subtitle">Enter credentials to access administrative dashboard</p>
+    <div class="brand-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+      <?= renderAvoraLogo('light', 'lg', '#') ?>
+      <p class="brand-subtitle" style="margin-top: 0.5rem;">Enter credentials to access administrative dashboard</p>
     </div>
 
     <?php if (!empty($message)): ?>

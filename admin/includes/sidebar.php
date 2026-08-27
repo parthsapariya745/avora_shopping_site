@@ -6,6 +6,7 @@ $sidebarUserCount = 0;
 $sidebarCategoryCount = 0;
 $sidebarProductCount = 0;
 $sidebarPendingOrdersCount = 0;
+$sidebarInquiryCount = 0;
 
 if (isset($conn) && $conn instanceof mysqli) {
     if ($res = $conn->query("SELECT COUNT(*) FROM users")) {
@@ -20,15 +21,21 @@ if (isset($conn) && $conn instanceof mysqli) {
     if ($res = $conn->query("SELECT COUNT(*) FROM orders WHERE status = 'pending'")) {
         $sidebarPendingOrdersCount = (int)$res->fetch_row()[0];
     }
+    if ($res = $conn->query("SHOW TABLES LIKE 'inquiries'")) {
+        if ($res->num_rows > 0) {
+            if ($inqRes = $conn->query("SELECT COUNT(*) FROM inquiries WHERE status = 'new'")) {
+                $sidebarInquiryCount = (int)$inqRes->fetch_row()[0];
+            }
+        }
+    }
 }
 
 $activeGroup = $activeGroup ?? 'dashboard';
-?>
+<?php require_once __DIR__ . '/../../user/includes/logo.php'; ?>
 <!-- Desktop & Mobile Sidebar -->
 <aside class="sidebar" id="adminSidebar">
-  <div class="sidebar-brand">
-    <div class="brand-icon">AV</div>
-    <span class="brand-name">AVORA</span>
+  <div class="sidebar-brand" style="padding: 1.25rem 1rem;">
+    <?= renderAvoraLogo('dark', 'sm', $base . 'dashboard.php') ?>
   </div>
 
   <ul class="sidebar-menu">
@@ -75,6 +82,15 @@ $activeGroup = $activeGroup ?? 'dashboard';
         </span>
         <span>Orders</span>
         <span class="badge-count" id="badgeOrders" style="background:#fffbeb; color:#b45309;"><?= $sidebarPendingOrdersCount ?></span>
+      </a>
+    </li>
+    <li>
+      <a href="<?= $base ?>inquiries/index.php" class="menu-link <?= ($activeGroup === 'inquiries') ? 'active' : '' ?>">
+        <span class="menu-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </span>
+        <span>Inquiries</span>
+        <span class="badge-count" id="badgeInquiries" style="background:#f0fdf4; color:#15803d;"><?= $sidebarInquiryCount ?></span>
       </a>
     </li>
   </ul>

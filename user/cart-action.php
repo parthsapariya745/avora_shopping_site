@@ -93,14 +93,14 @@ if ($action === 'add') {
     setFlashMessage('Your cart has been cleared.', 'info');
 } elseif ($action === 'promo') {
     $code = strtoupper(trim($_POST['promo_code'] ?? ''));
-    if ($code === 'STITCH15' || $code === 'SUMMER15' || $code === 'MITRAA15') {
+    if ($code === 'AVORA15' || $code === 'SUMMER15' || $code === 'STITCH15' || $code === 'MITRAA15') {
         $_SESSION['promo_code'] = $code;
         $_SESSION['promo_discount'] = 15;
         setFlashMessage('Promo code applied! 15% discount granted.', 'success');
     } else {
         unset($_SESSION['promo_code']);
         unset($_SESSION['promo_discount']);
-        setFlashMessage('Invalid promo code. Try "STITCH15"', 'error');
+        setFlashMessage('Invalid promo code. Try "AVORA15"', 'error');
     }
 } elseif ($action === 'remove_promo') {
     unset($_SESSION['promo_code']);

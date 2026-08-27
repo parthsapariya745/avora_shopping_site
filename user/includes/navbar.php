@@ -5,12 +5,7 @@ $userName = getCurrentUserName();
 <header class="navbar-wrapper">
   <div class="app-container main-header">
     <!-- Brand Logo -->
-    <a href="index.php" class="brand-logo avora-brand-logo">
-      <div class="brand-icon">
-        <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
-      </div>
-      <span class="avora-text-logo"><span class="avora-initial">A</span>VORA</span>
-    </a>
+    <?= renderAvoraLogo('dark', 'md', 'index.php') ?>
 
     <!-- Navigation Menu Links (Desktop) -->
     <ul class="nav-links desktop-nav" id="navLinksList" style="padding: 0; margin: 0;">

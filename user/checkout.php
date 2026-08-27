@@ -140,7 +140,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['place_order']
             unset($_SESSION['promo_code']);
             unset($_SESSION['promo_discount']);
 
-            setFlashMessage("Thank you! Your order #STITCH-" . $orderId . " has been placed successfully.", "success");
+            setFlashMessage("Thank you! Your order #ORD-" . $orderId . " has been placed successfully.", "success");
             header("Location: orders.php?placed=1&order_id=" . $orderId);
             exit;
         } else {

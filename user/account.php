@@ -71,12 +71,7 @@ require __DIR__ . "/includes/header.php";
 <div class="app-container" style="padding-top: 1rem; padding-bottom: 3rem;">
   <!-- Account Portal Top Bar -->
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; margin-bottom: 1.75rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem;">
-    <a href="index.php" style="display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1.3rem; color: var(--text-main);">
-      <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--primary-color); color: #fff; border-radius: var(--radius-md);">
-        <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
-      </span>
-      <span>Stitch <strong style="color: var(--primary-color);">Store</strong></span>
-    </a>
+    <?= renderAvoraLogo('light', 'md', 'index.php') ?>
 
     <div style="display: flex; align-items: center; gap: 0.75rem;">
       <a href="index.php" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 0.35rem;">

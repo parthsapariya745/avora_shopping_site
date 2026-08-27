@@ -7,12 +7,7 @@
         <div class="footer-top">
           <!-- Column 1: Brand -->
           <div class="footer-brand">
-            <div class="footer-logo avora-footer-logo">
-              <div class="brand-icon">
-                <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
-              </div>
-              <span class="avora-text-logo"><span class="avora-initial">A</span>VORA</span>
-            </div>
+            <?= renderAvoraLogo('dark', 'md', 'index.php') ?>
             <p class="footer-desc">
               Timeless pieces made with quality materials to elevate your everyday living.
             </p>
