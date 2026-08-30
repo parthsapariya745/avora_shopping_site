@@ -27,4 +27,21 @@ function renderAvoraLogo($variant = 'auto', $size = 'md', $link = 'index.php') {
     <?php
     return ob_get_clean();
 }
+
+/**
+ * Resolves product image URL for Admin panel (supports both external URLs and local uploads)
+ */
+function getAdminProductImageUrl($imageName, $basePath = '../../') {
+    if (empty($imageName)) {
+        return '';
+    }
+    if (strpos($imageName, 'http://') === 0 || strpos($imageName, 'https://') === 0) {
+        return $imageName;
+    }
+    $clean = ltrim($imageName, '/');
+    if (strpos($clean, 'uploads/products/') === 0) {
+        return $basePath . $clean;
+    }
+    return $basePath . 'uploads/products/' . htmlspecialchars($imageName);
+}
 ?>

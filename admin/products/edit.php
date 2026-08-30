@@ -213,7 +213,7 @@ require_once __DIR__ . "/../includes/header.php";
               <div class="image-preview-grid" style="margin-top:0; margin-bottom:1.25rem;">
                 <?php foreach ($existingImages as $img): ?>
                   <div class="preview-box-item">
-                    <img src="<?= getProductImageUrl($img['image']) ?>" alt="Product image">
+                    <img src="<?= getAdminProductImageUrl($img['image'], '../../') ?>" alt="Product image">
                     <a href="edit.php?id=<?= $productId ?>&delete_img_id=<?= $img['id'] ?>" 
                        onclick="return confirm('Remove this image?');" 
                        class="preview-remove-btn"

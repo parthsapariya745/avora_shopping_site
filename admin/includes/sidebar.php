@@ -31,11 +31,12 @@ if (isset($conn) && $conn instanceof mysqli) {
 }
 
 $activeGroup = $activeGroup ?? 'dashboard';
-<?php require_once __DIR__ . '/../../user/includes/logo.php'; ?>
+require_once __DIR__ . '/../../user/includes/logo.php';
+?>
 <!-- Desktop & Mobile Sidebar -->
 <aside class="sidebar" id="adminSidebar">
   <div class="sidebar-brand" style="padding: 1.25rem 1rem;">
-    <?= renderAvoraLogo('dark', 'sm', $base . 'dashboard.php') ?>
+    <?= renderAvoraLogo('light', 'sm', $base . 'dashboard.php') ?>
   </div>
 
   <ul class="sidebar-menu">

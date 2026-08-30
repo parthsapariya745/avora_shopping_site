@@ -195,8 +195,19 @@ require_once __DIR__ . "/../includes/header.php";
                 <td>
                   <div class="product-cell">
                     <div class="product-thumb">
-                      <?php if (!empty($prod['primary_image']) && file_exists(__DIR__ . "/../../uploads/products/" . $prod['primary_image'])): ?>
-                        <img src="../../uploads/products/<?= htmlspecialchars($prod['primary_image']) ?>" alt="<?= htmlspecialchars($prod['name']) ?>">
+                      <?php 
+                        $imgSrc = getAdminProductImageUrl($prod['primary_image'] ?? '', '../../');
+                        $hasImg = false;
+                        if (!empty($prod['primary_image'])) {
+                            if (strpos($prod['primary_image'], 'http://') === 0 || strpos($prod['primary_image'], 'https://') === 0) {
+                                $hasImg = true;
+                            } elseif (file_exists(__DIR__ . "/../../uploads/products/" . $prod['primary_image'])) {
+                                $hasImg = true;
+                            }
+                        }
+                      ?>
+                      <?php if ($hasImg): ?>
+                        <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($prod['name']) ?>" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">
                       <?php else: ?>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                       <?php endif; ?>

@@ -540,10 +540,9 @@ img {
   transition: color 0.3s ease;
 }
 
-/* Variant for dark header/navbar/sidebar */
+/* Variant for dark header/navbar */
 .logo-variant-dark .avora-title-main,
 .navbar-wrapper .avora-title-main,
-.sidebar .avora-title-main,
 .email-header .avora-title-main {
   color: #FAF6F0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -570,8 +569,7 @@ img {
 }
 
 .logo-variant-dark .avora-tagline-sub,
-.navbar-wrapper .avora-tagline-sub,
-.sidebar .avora-tagline-sub {
+.navbar-wrapper .avora-tagline-sub {
   color: #C79A5B;
 }
 

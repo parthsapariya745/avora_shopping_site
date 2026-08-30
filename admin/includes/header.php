@@ -18,6 +18,37 @@ $adminInitials = strtoupper(substr($adminName, 0, 2));
   <?php if (!empty($pageCss)): ?>
     <link rel="stylesheet" href="<?= $base ?>css/<?= htmlspecialchars($pageCss) ?>">
   <?php endif; ?>
+
+  <style>
+    /* Admin Portal Full-Width Layout Overrides */
+    body .app-container {
+      max-width: 100% !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    body .page-content {
+      max-width: 100% !important;
+      width: 100% !important;
+      padding: 1.75rem 2rem !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .tables-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .tables-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
